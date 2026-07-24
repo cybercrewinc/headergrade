@@ -534,13 +534,18 @@ function renderOsint(data) {
     : `<span class="muted">${esc(t('val.none'))}</span>`;
 
   const soc = data.social;
+  const socialImg = soc && soc.image
+    ? `<div class="social-preview"><img src="${esc(soc.image)}" alt="${esc(soc.title || '')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.social-preview').remove()" /><a class="social-img-link" href="${esc(soc.image)}" target="_blank" rel="noopener">${esc(soc.image)}</a></div>`
+    : '';
   const socialBlock = soc
-    ? `<table class="kv">
-        <tr><td class="rk">${esc(t('kv.title'))}</td><td>${esc(soc.title || '—')}</td></tr>
-        <tr><td class="rk">${esc(t('kv.description'))}</td><td>${esc(soc.description || '—')}</td></tr>
-        <tr><td class="rk">${esc(t('kv.keywords'))}</td><td>${esc(soc.keywords || '—')}</td></tr>
-        ${soc.image ? `<tr><td class="rk">${esc(t('kv.image'))}</td><td>${esc(soc.image)}</td></tr>` : ''}
-      </table>`
+    ? `<div class="social-layout">
+        <table class="kv">
+          <tr><td class="rk">${esc(t('kv.title'))}</td><td>${esc(soc.title || '—')}</td></tr>
+          <tr><td class="rk">${esc(t('kv.description'))}</td><td>${esc(soc.description || '—')}</td></tr>
+          <tr><td class="rk">${esc(t('kv.keywords'))}</td><td>${esc(soc.keywords || '—')}</td></tr>
+        </table>
+        ${socialImg}
+      </div>`
     : `<span class="muted">${esc(t('social.none'))}</span>`;
 
   const hostsBlock = `<div class="subs">${
