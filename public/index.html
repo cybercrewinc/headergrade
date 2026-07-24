@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
   <header class="site-head">
@@ -48,9 +48,10 @@
       </a>
       <nav class="nav">
         <a href="/" data-i18n="nav.home">ホーム</a>
-        <a href="#about" data-i18n="nav.about">概要</a>
+        <a href="about.html" data-i18n="nav.about">概要</a>
         <a href="#grading" data-i18n="nav.grading">評価基準</a>
-        <a href="#api" data-i18n="nav.api">API</a>
+        <a href="api.html" data-i18n="nav.api">API</a>
+        <a href="https://github.com/Ishan-Nim/headergrade" target="_blank" rel="noopener" data-i18n="nav.repo">GitHub</a>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">
           <span data-lang="en">EN</span><span class="sep">/</span><span data-lang="ja">日本語</span>
         </button>
@@ -108,25 +109,18 @@
       </div>
     </section>
 
-    <section id="about" class="prose">
-      <h2 data-i18n="about.title">概要</h2>
-      <p data-i18n="about.p1">HeaderGradeはブラウザと同じようにページを取得し、ブラウザ側のセキュリティを制御するHTTPレスポンスヘッダーを検査します：Strict-Transport-Security、Content-Security-Policy、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Permissions-Policy。ヘッダーが1つ欠けるごとに評価はAからFへ1段階下がります。6つすべてが揃い、Content-Security-Policyにunsafe-inlineが含まれていなければA+になります。</p>
-      <p data-i18n="about.p2">各スキャンでは受動的なOSINT調査も実行します：DNSレコード、メール認証（SPF、DMARC、MX）、稼働中のTLS証明書、公開された証明書透明性ログから見つかったサブドメイン、RDAPによるドメイン登録情報。すべて公開データを読み取るだけで、ポートスキャンや不要な通信は一切行いません。</p>
-    </section>
-
-    <section id="api" class="prose">
-      <h2 data-i18n="api.title">API</h2>
-      <p data-i18n="api.intro">このページのすべての情報はJSONで取得できます：</p>
-      <pre>GET /api/scan?url=example.com&amp;follow=1&amp;hide=0
-GET /api/osint?domain=example.com
-GET /api/stats</pre>
-    </section>
   </main>
 
   <footer class="site-foot">
-    <div class="wrap" data-i18n="footer.note">評価はヘッダーの有無のみを反映します。これは出発点であり、完全な監査ではありません。</div>
+    <div class="wrap foot-row">
+      <span data-i18n="footer.note">評価はヘッダーの有無のみを反映します。これは出発点であり、完全な監査ではありません。</span>
+      <a class="foot-repo" href="https://github.com/Ishan-Nim/headergrade" target="_blank" rel="noopener" data-i18n="nav.repo">GitHub</a>
+    </div>
   </footer>
 
-  <script src="app.js?v=7"></script>
+  <script src="vendor/jspdf.umd.min.js"></script>
+  <script src="vendor/html2canvas.min.js"></script>
+  <script src="app.js?v=8"></script>
+  <script src="report.js?v=1"></script>
 </body>
 </html>

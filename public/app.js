@@ -11,6 +11,18 @@ const I18N = {
     'nav.about': 'About',
     'nav.grading': 'Grading',
     'nav.api': 'API',
+    'nav.repo': 'GitHub',
+    'about.lead': 'HeaderGrade is a free tool that grades any website’s HTTP security headers and runs a passive OSINT recon pass — no sign-up, no ports probed.',
+    'about.repoTitle': 'Source code',
+    'about.repoText': 'HeaderGrade is open source. Browse the code, report an issue, or contribute on GitHub:',
+    'about.repoLink': 'View repository on GitHub',
+    'api.lead': 'The scanner is a small JSON HTTP API. No key required. Everything the web UI shows is available programmatically.',
+    'api.endpointsTitle': 'Endpoints',
+    'api.scanDesc': 'Grade the security headers of a URL. follow=1 follows redirects; hide=1 keeps the scan out of public stats.',
+    'api.osintDesc': 'Passive OSINT recon for a domain: DNS, email auth, TLS, subdomains, registration and more.',
+    'api.statsDesc': 'Aggregate grade totals and the hall of fame.',
+    'api.exampleTitle': 'Example',
+    'api.repoText': 'Full source and docs on GitHub:',
     'feat.headers': '6 security headers',
     'feat.email': 'Email auth',
     'feat.whois': 'WHOIS / RDAP',
@@ -44,6 +56,25 @@ const I18N = {
     'api.title': 'API',
     'api.intro': 'Everything on this page is available as JSON:',
     'footer.note': 'Grades reflect header presence only — they are a starting point, not a full audit.',
+    'report.button': 'Generate report',
+    'report.generating': 'Building PDF…',
+    'report.failed': 'Could not build the report. Please try again.',
+    'report.docTitle': 'Security Header Report',
+    'report.subtitle': 'HTTP security header & OSINT assessment',
+    'report.target': 'Target',
+    'report.grade': 'Grade',
+    'report.status': 'HTTP status',
+    'report.scanned': 'Scanned',
+    'report.generatedAt': 'Report generated',
+    'report.summary': 'Summary',
+    'report.summaryLine': '{present} of {total} security headers present.',
+    'report.sectionHeaders': 'Security headers',
+    'report.sectionNotes': 'Notes & warnings',
+    'report.sectionRaw': 'Raw response headers',
+    'report.present': 'Present',
+    'report.missing': 'Missing',
+    'report.page': 'Page {n} of {total}',
+    'report.confidential': 'HeaderGrade · osint.cybercrew.co.jp',
     'table.total': 'Total',
     'table.empty': 'Nothing here yet',
     'result.loading': 'Fetching headers…',
@@ -130,6 +161,18 @@ const I18N = {
     'nav.about': '概要',
     'nav.grading': '評価基準',
     'nav.api': 'API',
+    'nav.repo': 'GitHub',
+    'about.lead': 'HeaderGradeは、どのウェブサイトのHTTPセキュリティヘッダーも評価し、受動的なOSINT調査も実行する無料ツールです。登録不要、ポートスキャンも行いません。',
+    'about.repoTitle': 'ソースコード',
+    'about.repoText': 'HeaderGradeはオープンソースです。GitHubでコードの閲覧、問題の報告、貢献ができます：',
+    'about.repoLink': 'GitHubでリポジトリを見る',
+    'api.lead': 'スキャナーは小さなJSON HTTP APIです。キーは不要です。Web UIに表示されるすべての情報をプログラムから取得できます。',
+    'api.endpointsTitle': 'エンドポイント',
+    'api.scanDesc': 'URLのセキュリティヘッダーを評価します。follow=1はリダイレクトを追跡し、hide=1は公開統計にスキャンを含めません。',
+    'api.osintDesc': 'ドメインの受動的OSINT調査：DNS、メール認証、TLS、サブドメイン、登録情報など。',
+    'api.statsDesc': '評価の総合集計と殿堂入りを取得します。',
+    'api.exampleTitle': '例',
+    'api.repoText': '完全なソースとドキュメントはGitHubにあります：',
     'feat.headers': '6つのセキュリティヘッダー',
     'feat.email': 'メール認証',
     'feat.whois': 'WHOIS / RDAP',
@@ -163,6 +206,25 @@ const I18N = {
     'api.title': 'API',
     'api.intro': 'このページのすべての情報はJSONで取得できます：',
     'footer.note': '評価はヘッダーの有無のみを反映します。これは出発点であり、完全な監査ではありません。',
+    'report.button': 'レポートを作成',
+    'report.generating': 'PDFを作成中…',
+    'report.failed': 'レポートを作成できませんでした。もう一度お試しください。',
+    'report.docTitle': 'セキュリティヘッダー レポート',
+    'report.subtitle': 'HTTPセキュリティヘッダー＆OSINT診断',
+    'report.target': '対象',
+    'report.grade': '評価',
+    'report.status': 'HTTPステータス',
+    'report.scanned': 'スキャン日時',
+    'report.generatedAt': 'レポート作成日時',
+    'report.summary': '概要',
+    'report.summaryLine': '{total}個中{present}個のセキュリティヘッダーが存在します。',
+    'report.sectionHeaders': 'セキュリティヘッダー',
+    'report.sectionNotes': '注意事項',
+    'report.sectionRaw': '生レスポンスヘッダー',
+    'report.present': 'あり',
+    'report.missing': 'なし',
+    'report.page': '{n} / {total} ページ',
+    'report.confidential': 'HeaderGrade · osint.cybercrew.co.jp',
     'table.total': '合計',
     'table.empty': 'まだ何もありません',
     'result.loading': 'ヘッダーを取得中…',
@@ -308,6 +370,17 @@ const GRADE_COLORS = {
   F: 'var(--g-f)',
 };
 
+// Concrete hex values (the report/PDF can't resolve CSS custom properties).
+const GRADE_HEX = {
+  'A+': '#12a150',
+  A: '#2ba24c',
+  B: '#8fa61b',
+  C: '#d19b12',
+  D: '#e07b1f',
+  E: '#d94f27',
+  F: '#d62f2f',
+};
+
 const form = document.getElementById('scan-form');
 const input = document.getElementById('url-input');
 const btn = document.getElementById('scan-btn');
@@ -360,13 +433,16 @@ async function loadStats() {
   }
 }
 
-document.getElementById('panels').addEventListener('click', (e) => {
-  const link = e.target.closest('a[data-scan]');
-  if (!link) return;
-  e.preventDefault();
-  input.value = link.dataset.scan;
-  form.requestSubmit();
-});
+const panelsEl = document.getElementById('panels');
+if (panelsEl) {
+  panelsEl.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-scan]');
+    if (!link) return;
+    e.preventDefault();
+    input.value = link.dataset.scan;
+    form.requestSubmit();
+  });
+}
 
 const SCAN_HEADERS = [
   'Strict-Transport-Security',
@@ -426,12 +502,19 @@ function renderResult(data) {
           <h2>${esc(data.finalUrl)}</h2>
           <p>${esc(t('result.httpline', { status: data.status, date: when }))}</p>
         </div>
+        <button type="button" id="report-btn" class="report-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          <span class="report-btn-label">${esc(t('report.button'))}</span>
+        </button>
       </div>
       <div class="headers-grid">${cards}</div>
       ${notesHtml}
       <div class="raw-block">${raw}</div>
     </div>`;
   resultEl.classList.remove('hidden');
+
+  const reportBtn = document.getElementById('report-btn');
+  if (reportBtn) reportBtn.addEventListener('click', () => window.generateReport && window.generateReport(reportBtn));
 }
 
 function list(items, emptyKey) {
@@ -650,7 +733,7 @@ async function loadOsint(domain) {
   }
 }
 
-form.addEventListener('submit', async (e) => {
+if (form) form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const url = input.value.trim();
   if (!url) return;
@@ -693,8 +776,20 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-document.getElementById('lang-toggle').addEventListener('click', () => {
-  applyLang(LANG === 'en' ? 'ja' : 'en');
-});
+const langToggleEl = document.getElementById('lang-toggle');
+if (langToggleEl) {
+  langToggleEl.addEventListener('click', () => {
+    applyLang(LANG === 'en' ? 'ja' : 'en');
+  });
+}
+
+// Bridge for report.js: it reads the latest scan/OSINT and translations.
+window.HG = {
+  t,
+  get lastResult() { return lastResult; },
+  get lastOsint() { return lastOsint; },
+  get lang() { return LANG; },
+  gradeColor: (g) => GRADE_HEX[g] || '#5b6b80',
+};
 
 applyLang(detectLang());

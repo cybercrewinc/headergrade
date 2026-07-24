@@ -162,6 +162,30 @@ body {
 
 .result-top { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; }
 
+.report-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 11px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  align-self: flex-start;
+}
+.report-btn:hover { background: #3d88ff; }
+.report-btn:disabled { opacity: 0.65; cursor: default; }
+.report-btn svg { display: block; }
+@media (max-width: 560px) {
+  .report-btn { margin-left: 0; width: 100%; justify-content: center; }
+}
+
 .grade-stamp {
   font-family: var(--display);
   font-weight: 700;
@@ -436,6 +460,42 @@ body {
   color: var(--muted);
   font-size: 0.88rem;
 }
+.foot-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.foot-repo { color: var(--accent); text-decoration: none; font-weight: 600; }
+.foot-repo:hover { text-decoration: underline; }
+
+/* ---- content pages (about / api) ---- */
+
+.site-head.slim { padding-bottom: 0; }
+.page-hero { text-align: left; padding: 40px 0 46px; }
+.page-hero h1 {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.page-hero p { color: #a9bad2; margin-top: 12px; max-width: 640px; }
+.page-main { padding-top: 40px; padding-bottom: 20px; }
+.page-main .prose { margin: 0 0 34px; }
+.page-main .prose:first-child { margin-top: 0; }
+
+.endpoint { margin: 0 0 22px; }
+.endpoint .ep-desc { color: var(--muted); font-size: 0.92rem; margin-top: 8px; }
+.repo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 11px 18px;
+  border-radius: 10px;
+}
+.repo-cta:hover { background: #3d88ff; }
 
 @media (max-width: 900px) {
   .panels { grid-template-columns: 1fr; }
