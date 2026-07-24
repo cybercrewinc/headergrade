@@ -63,6 +63,7 @@
 
   <main class="wrap">
     <section id="result" class="result hidden" aria-live="polite"></section>
+    <section id="osint" class="osint hidden" aria-live="polite"></section>
 
     <section class="panels" id="panels">
       <div class="panel">
@@ -90,6 +91,10 @@
         <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code> and
         <code>Permissions-Policy</code>. Each missing header lowers the grade one step from A down to F.
         A site with all six — and a Content-Security-Policy free of <code>unsafe-inline</code> — earns an A+.</p>
+      <p>Every scan also runs a passive <strong>OSINT recon</strong> pass: DNS records, email
+        authentication (SPF, DMARC, MX), the live TLS certificate, subdomains discovered from public
+        certificate transparency logs, and domain registration from RDAP. All of it reads public data —
+        nothing probes ports or sends unsolicited traffic.</p>
     </section>
 
     <section id="api" class="prose">

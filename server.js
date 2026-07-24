@@ -1,8 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const dns = require('dns').promises;
-const net = require('net');
+const { assertPublicHost } = require('./lib/guard');
+const { runOsint } = require('./lib/osint');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -104,38 +104,6 @@ function gradeHeaders(headers, finalUrl) {
 }
 
 // ---------------------------------------------------------------------------
-// SSRF guard — refuse to scan private / internal addresses
-// ---------------------------------------------------------------------------
-
-function isPrivateIp(ip) {
-  if (net.isIPv6(ip)) {
-    const low = ip.toLowerCase();
-    return low === '::1' || low.startsWith('fc') || low.startsWith('fd') || low.startsWith('fe80');
-  }
-  const parts = ip.split('.').map(Number);
-  const [a, b] = parts;
-  return (
-    a === 10 ||
-    a === 127 ||
-    a === 0 ||
-    (a === 172 && b >= 16 && b <= 31) ||
-    (a === 192 && b === 168) ||
-    (a === 169 && b === 254)
-  );
-}
-
-async function assertPublicHost(hostname) {
-  if (net.isIP(hostname)) {
-    if (isPrivateIp(hostname)) throw new Error('Refusing to scan private or internal addresses.');
-    return;
-  }
-  const results = await dns.lookup(hostname, { all: true });
-  for (const r of results) {
-    if (isPrivateIp(r.address)) throw new Error('Refusing to scan private or internal addresses.');
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Scan
 // ---------------------------------------------------------------------------
 
@@ -205,6 +173,17 @@ app.get('/api/scan', async (req, res) => {
         ? 'The site took too long to respond.'
         : err.message || 'Scan failed.';
     res.status(422).json({ error: message });
+  }
+});
+
+app.get('/api/osint', async (req, res) => {
+  const { domain } = req.query;
+  if (!domain) return res.status(400).json({ error: 'Missing domain parameter.' });
+  try {
+    const result = await runOsint(String(domain));
+    res.json(result);
+  } catch (err) {
+    res.status(422).json({ error: err.message || 'OSINT lookup failed.' });
   }
 });
 

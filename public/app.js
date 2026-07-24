@@ -12,6 +12,7 @@ const form = document.getElementById('scan-form');
 const input = document.getElementById('url-input');
 const btn = document.getElementById('scan-btn');
 const resultEl = document.getElementById('result');
+const osintEl = document.getElementById('osint');
 
 function esc(s) {
   const d = document.createElement('div');
@@ -93,6 +94,112 @@ function renderResult(data) {
   resultEl.classList.remove('hidden');
 }
 
+function list(items, empty) {
+  if (!items || !items.length) return `<span class="muted">${esc(empty)}</span>`;
+  return items.map((i) => `<span class="tag">${esc(i)}</span>`).join('');
+}
+
+function renderOsint(data) {
+  const d = data.dns;
+  const cert = data.certificate;
+  const reg = data.registration;
+
+  const dnsRows = [
+    ['A', d.a],
+    ['AAAA', d.aaaa],
+    ['MX', d.mx],
+    ['NS', d.ns],
+    ['TXT', d.txt],
+    ['CAA', d.caa],
+  ]
+    .map(
+      ([k, v]) =>
+        `<tr><td class="rk">${k}</td><td>${v && v.length ? v.map((x) => esc(x)).join('<br>') : '<span class="muted">—</span>'}</td></tr>`
+    )
+    .join('');
+
+  const emailCards = data.email
+    .map(
+      (f) => `<div class="hcard ${f.ok ? 'ok' : 'miss'}">
+        <div class="hname">${esc(f.label)}</div>
+        <div class="hwhy">${esc(f.detail)}</div>
+      </div>`
+    )
+    .join('');
+
+  const certBlock = cert
+    ? `<table class="kv">
+        <tr><td class="rk">Subject</td><td>${esc(cert.subject || '—')}</td></tr>
+        <tr><td class="rk">Issuer</td><td>${esc(cert.issuer || '—')}</td></tr>
+        <tr><td class="rk">Valid</td><td>${esc(cert.validFrom || '?')} → ${esc(cert.validTo || '?')}</td></tr>
+        <tr><td class="rk">Expires in</td><td>${cert.daysLeft} days${cert.daysLeft < 15 ? ' ⚠' : ''}</td></tr>
+        <tr><td class="rk">SAN</td><td>${list(cert.altNames, 'none')}</td></tr>
+      </table>`
+    : '<span class="muted">No TLS certificate on port 443.</span>';
+
+  const regBlock = reg
+    ? `<table class="kv">
+        <tr><td class="rk">Registrar</td><td>${esc(reg.registrar || '—')}</td></tr>
+        <tr><td class="rk">Created</td><td>${esc(reg.created || '—')}</td></tr>
+        <tr><td class="rk">Expires</td><td>${esc(reg.expires || '—')}</td></tr>
+        <tr><td class="rk">Status</td><td>${list(reg.status, '—')}</td></tr>
+        <tr><td class="rk">Nameservers</td><td>${list(reg.nameservers, '—')}</td></tr>
+      </table>`
+    : '<span class="muted">No RDAP registration data available for this TLD.</span>';
+
+  osintEl.innerHTML = `
+    <div class="osint-card">
+      <div class="osint-head">
+        <h2>OSINT recon</h2>
+        <span class="muted">${esc(data.domain)}</span>
+      </div>
+      <div class="osint-grid">
+        <div class="recon-box span-2">
+          <h3>DNS records</h3>
+          <table class="kv">${dnsRows}</table>
+          ${d.soa ? `<div class="muted soa">SOA: ${esc(d.soa)}</div>` : ''}
+        </div>
+        <div class="recon-box">
+          <h3>Email authentication</h3>
+          <div class="email-cards">${emailCards}</div>
+        </div>
+        <div class="recon-box">
+          <h3>TLS certificate</h3>
+          ${certBlock}
+        </div>
+        <div class="recon-box">
+          <h3>Domain registration</h3>
+          ${regBlock}
+        </div>
+        <div class="recon-box">
+          <h3>Subdomains <span class="muted">(cert transparency)</span></h3>
+          <div class="subs">${
+            data.subdomains.length
+              ? data.subdomains.map((s) => `<a href="#" data-scan="${esc(s)}" class="tag link">${esc(s)}</a>`).join('')
+              : '<span class="muted">None found in public CT logs.</span>'
+          }</div>
+        </div>
+      </div>
+    </div>`;
+  osintEl.classList.remove('hidden');
+}
+
+async function loadOsint(domain) {
+  osintEl.classList.remove('hidden');
+  osintEl.innerHTML = '<div class="osint-card"><h2>OSINT recon</h2><p class="muted">Gathering DNS, TLS, subdomains and registration…</p></div>';
+  try {
+    const res = await fetch('/api/osint?domain=' + encodeURIComponent(domain));
+    const data = await res.json();
+    if (!res.ok) {
+      osintEl.innerHTML = `<div class="osint-card"><h2>OSINT recon</h2><p class="muted">${esc(data.error || 'Recon failed.')}</p></div>`;
+    } else {
+      renderOsint(data);
+    }
+  } catch {
+    osintEl.classList.add('hidden');
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const url = input.value.trim();
@@ -102,6 +209,7 @@ form.addEventListener('submit', async (e) => {
   btn.textContent = 'Scanning…';
   resultEl.classList.remove('hidden');
   resultEl.innerHTML = '<div class="result-card">Fetching headers…</div>';
+  osintEl.classList.add('hidden');
 
   const params = new URLSearchParams({
     url,
@@ -117,6 +225,7 @@ form.addEventListener('submit', async (e) => {
     } else {
       renderResult(data);
       loadStats();
+      loadOsint(new URL(data.finalUrl).hostname);
     }
   } catch {
     resultEl.innerHTML = '<div class="result-error">Could not reach the scanner. Is the server running?</div>';
