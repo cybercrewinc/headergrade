@@ -22,30 +22,43 @@ const siteLimiter = rateLimit({
     res.status(429).json({ error: 'Too many requests.', errorCode: 'rate_limited' }),
 });
 
+// A holder of the seed token bypasses rate limiting so the bulk seeder can
+// populate stats quickly. Public traffic (no/invalid token) stays limited.
+const bypassLimit = (req) => Boolean(process.env.SEED_TOKEN) && req.query.seed === process.env.SEED_TOKEN;
+
 // Scan/OSINT limiter: these make outbound network calls, so they're tighter.
 const scanLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 15,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: bypassLimit,
   handler: (req, res) =>
     res.status(429).json({ error: 'Too many requests.', errorCode: 'rate_limited' }),
 });
 
-app.use(siteLimiter);
+app.use((req, res, next) => (bypassLimit(req) ? next() : siteLimiter(req, res, next)));
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'scans.json');
+const SEED_FILE = path.join(__dirname, 'seed.json');
 
 // ---------------------------------------------------------------------------
 // Persistence (simple JSON store)
 // ---------------------------------------------------------------------------
 
+// Runtime data lives in DATA_FILE, but App Platform storage is ephemeral, so
+// on a fresh container we fall back to the committed seed.json to keep the
+// Grand totals and Hall of fame populated across redeploys.
 function loadData() {
-  try {
-    return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  } catch {
-    return { totals: {}, recent: [], sites: {} };
+  for (const file of [DATA_FILE, SEED_FILE]) {
+    try {
+      const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+      return { totals: d.totals || {}, recent: d.recent || [], sites: d.sites || {} };
+    } catch {
+      /* try next */
+    }
   }
+  return { totals: {}, recent: [], sites: {} };
 }
 
 function saveData(data) {
