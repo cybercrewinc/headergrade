@@ -610,9 +610,40 @@ function renderOsint(data) {
   osintEl.classList.remove('hidden');
 }
 
+const OSINT_STEPS = [
+  'osint.dns',
+  'osint.location',
+  'osint.tls',
+  'osint.email',
+  'osint.reg',
+  'osint.hostnames',
+  'osint.firewall',
+  'osint.ports',
+  'osint.subs',
+  'osint.carbon',
+  'osint.social',
+];
+
+function renderOsintLoading(domain) {
+  const items = OSINT_STEPS.map(
+    (k, i) => `<div class="scan-line" style="animation-delay:${i * 0.12}s"><span class="scan-dot"></span><span class="scan-name">${esc(t(k))}</span></div>`
+  ).join('');
+  osintEl.innerHTML = `
+    <div class="osint-card">
+      <div class="osint-head"><h2>${esc(t('osint.title'))}</h2><span class="muted">${esc(domain)}</span></div>
+      <div class="scanning-card">
+        <div class="radar"><span class="radar-sweep"></span><span class="radar-core">${esc(domain.charAt(0).toUpperCase())}</span></div>
+        <div class="scanning-body">
+          <div class="scanning-sub">${esc(t('osint.loading'))}</div>
+          <div class="scan-lines osint-checklist">${items}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
 async function loadOsint(domain) {
   osintEl.classList.remove('hidden');
-  osintEl.innerHTML = `<div class="osint-card"><h2>${esc(t('osint.title'))}</h2><p class="muted">${esc(t('osint.loading'))}</p></div>`;
+  renderOsintLoading(domain);
   try {
     const res = await fetch('/api/osint?domain=' + encodeURIComponent(domain));
     const data = await res.json();
