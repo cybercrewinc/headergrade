@@ -230,9 +230,10 @@ app.get('/api/stats', (req, res) => {
   res.json({
     totals,
     total,
-    recent: uniqueRecent.slice(0, 10),
+    // Recent scans omit the grade on purpose: a visitor can see a site was
+    // scanned, but an individual site's risk grade is not exposed publicly.
+    recent: uniqueRecent.slice(0, 10).map((r) => ({ host: r.host, scannedAt: r.scannedAt })),
     fame: uniqueRecent.filter((r) => r.grade === 'A+' || r.grade === 'A').slice(0, 10),
-    shame: uniqueRecent.filter((r) => r.grade === 'F').slice(0, 10),
   });
 });
 

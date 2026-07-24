@@ -297,14 +297,24 @@ async function loadStats() {
         .join('') +
       `<tr><td><strong>${esc(t('table.total'))}</strong></td><td class="num"><strong>${stats.total.toLocaleString()}</strong></td></tr>`;
 
-    for (const [id, rows] of [
-      ['recent-table', stats.recent],
-      ['fame-table', stats.fame],
-    ]) {
-      const el = document.getElementById(id);
-      if (!el) continue;
-      el.innerHTML = rows.length
-        ? rows
+    // Recent scans: hostname only — an individual site's grade is not shown.
+    const recentEl = document.getElementById('recent-table');
+    if (recentEl) {
+      recentEl.innerHTML = stats.recent.length
+        ? stats.recent
+            .map(
+              (r) =>
+                `<tr><td class="host"><a href="#" data-scan="${esc(r.host)}">${esc(r.host)}</a></td></tr>`
+            )
+            .join('')
+        : `<tr><td class="empty">${esc(t('table.empty'))}</td></tr>`;
+    }
+
+    // Hall of fame: keep the grade — these are only top (A/A+) scores.
+    const fameEl = document.getElementById('fame-table');
+    if (fameEl) {
+      fameEl.innerHTML = stats.fame.length
+        ? stats.fame
             .map(
               (r) =>
                 `<tr><td class="host"><a href="#" data-scan="${esc(r.host)}">${esc(r.host)}</a></td><td class="num">${gradeChip(r.grade)}</td></tr>`
