@@ -79,6 +79,29 @@ const I18N = {
     'osint.reg': 'Domain registration',
     'osint.subs': 'Subdomains',
     'osint.ct': '(cert transparency)',
+    'osint.location': 'Server location',
+    'osint.hostnames': 'Host names',
+    'osint.firewall': 'Firewall / WAF',
+    'osint.ports': 'Open ports',
+    'osint.carbon': 'Carbon footprint',
+    'osint.social': 'Social tags',
+    'kv.city': 'City',
+    'kv.country': 'Country',
+    'kv.timezone': 'Timezone',
+    'kv.coords': 'Coordinates',
+    'kv.org': 'Organisation',
+    'kv.asn': 'ASN',
+    'kv.title': 'Title',
+    'kv.description': 'Description',
+    'kv.image': 'Image',
+    'kv.keywords': 'Keywords',
+    'carbon.size': 'Page size',
+    'carbon.co2': 'CO₂ per visit',
+    'carbon.energy': 'Energy',
+    'fw.none': 'No WAF detected from response headers.',
+    'ports.none': 'No common ports responded.',
+    'ports.note': 'Common ports only.',
+    'social.none': 'No social tags found.',
     'kv.subject': 'Subject',
     'kv.issuer': 'Issuer',
     'kv.valid': 'Valid',
@@ -177,6 +200,29 @@ const I18N = {
     'osint.reg': 'ドメイン登録',
     'osint.subs': 'サブドメイン',
     'osint.ct': '（証明書透明性）',
+    'osint.location': 'サーバーの所在地',
+    'osint.hostnames': 'ホスト名',
+    'osint.firewall': 'ファイアウォール / WAF',
+    'osint.ports': 'オープンポート',
+    'osint.carbon': 'カーボンフットプリント',
+    'osint.social': 'ソーシャルタグ',
+    'kv.city': '都市',
+    'kv.country': '国',
+    'kv.timezone': 'タイムゾーン',
+    'kv.coords': '座標',
+    'kv.org': '組織',
+    'kv.asn': 'ASN',
+    'kv.title': 'タイトル',
+    'kv.description': '説明',
+    'kv.image': '画像',
+    'kv.keywords': 'キーワード',
+    'carbon.size': 'ページサイズ',
+    'carbon.co2': '訪問あたりのCO₂',
+    'carbon.energy': 'エネルギー',
+    'fw.none': 'レスポンスヘッダーからWAFは検出されませんでした。',
+    'ports.none': '一般的なポートは応答しませんでした。',
+    'ports.note': '一般的なポートのみ。',
+    'social.none': 'ソーシャルタグは見つかりませんでした。',
     'kv.subject': 'サブジェクト',
     'kv.issuer': '発行者',
     'kv.valid': '有効期間',
@@ -456,6 +502,53 @@ function renderOsint(data) {
       </table>`
     : `<span class="muted">${esc(t('reg.none'))}</span>`;
 
+  const loc = data.location;
+  const locBlock = loc
+    ? `<table class="kv">
+        <tr><td class="rk">${esc(t('kv.city'))}</td><td>${esc(loc.city || '—')}</td></tr>
+        <tr><td class="rk">${esc(t('kv.country'))}</td><td>${esc(loc.country || '—')}${loc.countryCode ? ` (${esc(loc.countryCode)})` : ''}</td></tr>
+        <tr><td class="rk">${esc(t('kv.timezone'))}</td><td>${esc(loc.timezone || '—')}</td></tr>
+        <tr><td class="rk">${esc(t('kv.coords'))}</td><td>${loc.lat != null ? esc(loc.lat + ', ' + loc.lon) : '—'}</td></tr>
+        <tr><td class="rk">${esc(t('kv.org'))}</td><td>${esc(loc.org || loc.isp || '—')}</td></tr>
+        <tr><td class="rk">${esc(t('kv.asn'))}</td><td>${esc(loc.asn || '—')}</td></tr>
+      </table>`
+    : `<span class="muted">${esc(t('val.none'))}</span>`;
+
+  const fw = data.firewall || { detected: false };
+  const fwBlock = fw.detected
+    ? `<div class="hcard ok"><div class="hname">${esc(fw.name)}</div></div>`
+    : `<span class="muted">${esc(t('fw.none'))}</span>`;
+
+  const ports = data.ports || { open: [] };
+  const portsBlock = `<div class="subs">${
+    ports.open.length ? ports.open.map((p) => `<span class="tag">${p}</span>`).join('') : `<span class="muted">${esc(t('ports.none'))}</span>`
+  }</div><div class="muted soa">${esc(t('ports.note'))}</div>`;
+
+  const c = data.carbon;
+  const carbonBlock = c
+    ? `<table class="kv">
+        <tr><td class="rk">${esc(t('carbon.size'))}</td><td>${esc(c.sizeKb)} KB</td></tr>
+        <tr><td class="rk">${esc(t('carbon.co2'))}</td><td>${esc(c.co2mg)} mg</td></tr>
+        <tr><td class="rk">${esc(t('carbon.energy'))}</td><td>${esc(c.energyMwh)} mWh</td></tr>
+      </table>`
+    : `<span class="muted">${esc(t('val.none'))}</span>`;
+
+  const soc = data.social;
+  const socialBlock = soc
+    ? `<table class="kv">
+        <tr><td class="rk">${esc(t('kv.title'))}</td><td>${esc(soc.title || '—')}</td></tr>
+        <tr><td class="rk">${esc(t('kv.description'))}</td><td>${esc(soc.description || '—')}</td></tr>
+        <tr><td class="rk">${esc(t('kv.keywords'))}</td><td>${esc(soc.keywords || '—')}</td></tr>
+        ${soc.image ? `<tr><td class="rk">${esc(t('kv.image'))}</td><td>${esc(soc.image)}</td></tr>` : ''}
+      </table>`
+    : `<span class="muted">${esc(t('social.none'))}</span>`;
+
+  const hostsBlock = `<div class="subs">${
+    data.hostNames && data.hostNames.length
+      ? data.hostNames.map((h) => `<span class="tag">${esc(h)}</span>`).join('')
+      : `<span class="muted">${esc(t('val.none'))}</span>`
+  }</div>`;
+
   osintEl.innerHTML = `
     <div class="osint-card">
       <div class="osint-head">
@@ -481,12 +574,36 @@ function renderOsint(data) {
           ${regBlock}
         </div>
         <div class="recon-box">
+          <h3>${esc(t('osint.location'))}</h3>
+          ${locBlock}
+        </div>
+        <div class="recon-box">
+          <h3>${esc(t('osint.firewall'))}</h3>
+          ${fwBlock}
+        </div>
+        <div class="recon-box">
+          <h3>${esc(t('osint.ports'))}</h3>
+          ${portsBlock}
+        </div>
+        <div class="recon-box">
+          <h3>${esc(t('osint.carbon'))}</h3>
+          ${carbonBlock}
+        </div>
+        <div class="recon-box">
+          <h3>${esc(t('osint.hostnames'))}</h3>
+          ${hostsBlock}
+        </div>
+        <div class="recon-box">
           <h3>${esc(t('osint.subs'))} <span class="muted">${esc(t('osint.ct'))}</span></h3>
           <div class="subs">${
             data.subdomains.length
               ? data.subdomains.map((s) => `<a href="#" data-scan="${esc(s)}" class="tag link">${esc(s)}</a>`).join('')
               : `<span class="muted">${esc(t('subs.empty'))}</span>`
           }</div>
+        </div>
+        <div class="recon-box span-2">
+          <h3>${esc(t('osint.social'))}</h3>
+          ${socialBlock}
         </div>
       </div>
     </div>`;
