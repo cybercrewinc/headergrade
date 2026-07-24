@@ -1,0 +1,5 @@
+﻿User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://headergrade.cybercrew.co.jp/sitemap.xml

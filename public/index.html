@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeaderGrade — Free Security Header Scanner (A+ to F grades)</title>
+  <meta name="description" content="Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website." />
+  <meta name="keywords" content="security headers, header scanner, content security policy, HSTS, CSP checker, website security test" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://headergrade.cybercrew.co.jp/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="HeaderGrade" />
+  <meta property="og:title" content="HeaderGrade — Free Security Header Scanner" />
+  <meta property="og:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
+  <meta property="og:url" content="https://headergrade.cybercrew.co.jp/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="HeaderGrade — Free Security Header Scanner" />
+  <meta name="twitter:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HeaderGrade",
+    "url": "https://headergrade.cybercrew.co.jp/",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Any",
+    "description": "Free online scanner that grades a website's HTTP security headers from A+ to F.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap head-row">
+      <a class="brand" href="/">
+        <span class="brand-mark">HG</span>
+        <span class="brand-name">HeaderGrade</span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="#about">About</a>
+        <a href="#api">API</a>
+      </nav>
+    </div>
+
+    <div class="wrap hero">
+      <h1>Scan your site now</h1>
+      <p class="hero-sub">Six response headers decide most of your browser-side security. See which ones you're missing.</p>
+      <form id="scan-form" class="scan-bar" autocomplete="off">
+        <input id="url-input" type="text" placeholder="example.com" spellcheck="false" required />
+        <button type="submit" id="scan-btn">Scan</button>
+      </form>
+      <div class="scan-opts">
+        <label><input type="checkbox" id="opt-hide" /> Hide results</label>
+        <label><input type="checkbox" id="opt-follow" checked /> Follow redirects</label>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="result" class="result hidden" aria-live="polite"></section>
+
+    <section class="panels" id="panels">
+      <div class="panel">
+        <h2>Grand totals</h2>
+        <table id="totals-table"></table>
+      </div>
+      <div class="panel">
+        <h2>Recent scans</h2>
+        <table id="recent-table"></table>
+      </div>
+      <div class="panel">
+        <h2>Hall of fame</h2>
+        <table id="fame-table"></table>
+      </div>
+      <div class="panel">
+        <h2>Hall of shame</h2>
+        <table id="shame-table"></table>
+      </div>
+    </section>
+
+    <section id="about" class="prose">
+      <h2>About</h2>
+      <p>HeaderGrade fetches a page the way a browser would and inspects the HTTP response headers that control
+        browser-side security: <code>Strict-Transport-Security</code>, <code>Content-Security-Policy</code>,
+        <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code> and
+        <code>Permissions-Policy</code>. Each missing header lowers the grade one step from A down to F.
+        A site with all six — and a Content-Security-Policy free of <code>unsafe-inline</code> — earns an A+.</p>
+    </section>
+
+    <section id="api" class="prose">
+      <h2>API</h2>
+      <p>Everything on this page is available as JSON:</p>
+      <pre>GET /api/scan?url=example.com&amp;follow=1&amp;hide=0
+GET /api/stats</pre>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">Grades reflect header presence only — they are a starting point, not a full audit.</div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

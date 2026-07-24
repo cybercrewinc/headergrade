@@ -1,0 +1,12 @@
+{
+  "name": "headergrade",
+  "version": "1.0.0",
+  "description": "Scan any website's HTTP response headers and grade its security posture",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
