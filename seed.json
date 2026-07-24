@@ -1,0 +1,195 @@
+{
+  "totals": {
+    "B": 122,
+    "F": 1162,
+    "A+": 11,
+    "C": 124,
+    "E": 225,
+    "D": 128,
+    "A": 9
+  },
+  "recent": [
+    {
+      "host": "cloudflare.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:15:42Z"
+    },
+    {
+      "host": "gov.uk",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:14:42Z"
+    },
+    {
+      "host": "mercari.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:13:42Z"
+    },
+    {
+      "host": "manage.microsoft.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:12:42Z"
+    },
+    {
+      "host": "lencr.org",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:11:42Z"
+    },
+    {
+      "host": "r.manage.microsoft.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:10:42Z"
+    },
+    {
+      "host": "media.net",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:09:42Z"
+    },
+    {
+      "host": "login.microsoftonline.us",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:08:42Z"
+    },
+    {
+      "host": "agents.manage.microsoft.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:07:42Z"
+    },
+    {
+      "host": "mixpanel.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:06:42Z"
+    },
+    {
+      "host": "sync.mathtag.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:05:42Z"
+    },
+    {
+      "host": "trustedstack.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:04:42Z"
+    },
+    {
+      "host": "smilewanted.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:03:42Z"
+    },
+    {
+      "host": "zendesk.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:02:42Z"
+    },
+    {
+      "host": "cloud.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:01:42Z"
+    },
+    {
+      "host": "cyberark.com",
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:00:42Z"
+    },
+    {
+      "host": "demandbase.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:59:42Z"
+    },
+    {
+      "host": "forter.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:58:42Z"
+    },
+    {
+      "host": "citrix.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:57:42Z"
+    },
+    {
+      "host": "urbanairship.com",
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:56:42Z"
+    }
+  ],
+  "sites": {
+    "cloudflare.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:15:42Z"
+    },
+    "gov.uk": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:14:42Z"
+    },
+    "mercari.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:13:42Z"
+    },
+    "manage.microsoft.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:12:42Z"
+    },
+    "lencr.org": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:11:42Z"
+    },
+    "r.manage.microsoft.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:10:42Z"
+    },
+    "media.net": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:09:42Z"
+    },
+    "login.microsoftonline.us": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:08:42Z"
+    },
+    "agents.manage.microsoft.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:07:42Z"
+    },
+    "mixpanel.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:06:42Z"
+    },
+    "sync.mathtag.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:05:42Z"
+    },
+    "trustedstack.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:04:42Z"
+    },
+    "smilewanted.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:03:42Z"
+    },
+    "zendesk.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:02:42Z"
+    },
+    "cloud.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T05:01:42Z"
+    },
+    "cyberark.com": {
+      "grade": "A",
+      "scannedAt": "2026-07-24T05:00:42Z"
+    },
+    "demandbase.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:59:42Z"
+    },
+    "forter.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:58:42Z"
+    },
+    "citrix.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:57:42Z"
+    },
+    "urbanairship.com": {
+      "grade": "A+",
+      "scannedAt": "2026-07-24T04:56:42Z"
+    }
+  }
+}
