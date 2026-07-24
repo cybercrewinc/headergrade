@@ -44,12 +44,12 @@
   <header class="site-head">
     <div class="wrap head-row">
       <a class="brand" href="/">
-        <span class="brand-mark">HG</span>
-        <span class="brand-name">HeaderGrade</span>
+        <img src="logo.png" alt="HeaderGrade" class="brand-logo" width="167" height="32" />
       </a>
       <nav class="nav">
         <a href="/" data-i18n="nav.home">Home</a>
         <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#grading" data-i18n="nav.grading">Grading</a>
         <a href="#api" data-i18n="nav.api">API</a>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">
           <span data-lang="en">EN</span><span class="sep">/</span><span data-lang="ja">日本語</span>
@@ -62,12 +62,20 @@
       <p class="hero-sub" data-i18n="hero.sub">Six response headers decide most of your browser-side security. See which ones you're missing.</p>
       <form id="scan-form" class="scan-bar" autocomplete="off">
         <input id="url-input" type="text" data-i18n-attr="placeholder:hero.placeholder" placeholder="example.com" spellcheck="false" required />
-        <button type="submit" id="scan-btn" data-i18n="hero.scan">Scan</button>
+        <button type="submit" id="scan-btn"><span class="btn-label" data-i18n="hero.scan">Scan</span></button>
       </form>
       <div class="scan-opts">
         <label><input type="checkbox" id="opt-hide" /> <span data-i18n="hero.hide">Hide results</span></label>
         <label><input type="checkbox" id="opt-follow" checked /> <span data-i18n="hero.follow">Follow redirects</span></label>
       </div>
+      <ul class="feature-chips">
+        <li data-i18n="feat.headers">6 security headers</li>
+        <li data-i18n="osint.dns">DNS records</li>
+        <li data-i18n="osint.tls">TLS certificate</li>
+        <li data-i18n="osint.subs">Subdomains</li>
+        <li data-i18n="feat.email">Email auth</li>
+        <li data-i18n="feat.whois">WHOIS / RDAP</li>
+      </ul>
     </div>
   </header>
 
@@ -87,6 +95,20 @@
       <div class="panel">
         <h2 data-i18n="panel.fame">Hall of fame</h2>
         <table id="fame-table"></table>
+      </div>
+    </section>
+
+    <section id="grading" class="grading">
+      <h2 data-i18n="grade.title">How we grade</h2>
+      <p class="grading-intro" data-i18n="grade.intro">Your grade starts at A and drops one letter for each of the six security headers you're missing. A strong Content-Security-Policy lifts a perfect score to A+.</p>
+      <div class="grade-scale">
+        <div class="grade-row"><span class="grade-badge" data-g="A+">A+</span><span class="grade-desc" data-i18n="grade.aplus">All six headers present, with a Content-Security-Policy free of unsafe-inline and unsafe-eval.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="A">A</span><span class="grade-desc" data-i18n="grade.a">All six security headers present.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="B">B</span><span class="grade-desc" data-i18n="grade.b">One security header missing.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="C">C</span><span class="grade-desc" data-i18n="grade.c">Two security headers missing.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="D">D</span><span class="grade-desc" data-i18n="grade.d">Three missing — or the site was served over plain HTTP.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="E">E</span><span class="grade-desc" data-i18n="grade.e">Four security headers missing.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="F">F</span><span class="grade-desc" data-i18n="grade.f">Five or more security headers missing.</span></div>
       </div>
     </section>
 

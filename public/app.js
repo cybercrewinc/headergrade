@@ -9,7 +9,23 @@ const I18N = {
       "Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website.",
     'nav.home': 'Home',
     'nav.about': 'About',
+    'nav.grading': 'Grading',
     'nav.api': 'API',
+    'feat.headers': '6 security headers',
+    'feat.email': 'Email auth',
+    'feat.whois': 'WHOIS / RDAP',
+    'grade.title': 'How we grade',
+    'grade.intro':
+      "Your grade starts at A and drops one letter for each of the six security headers you're missing. A strong Content-Security-Policy lifts a perfect score to A+.",
+    'grade.aplus': 'All six headers present, with a Content-Security-Policy free of unsafe-inline and unsafe-eval.',
+    'grade.a': 'All six security headers present.',
+    'grade.b': 'One security header missing.',
+    'grade.c': 'Two security headers missing.',
+    'grade.d': 'Three missing — or the site was served over plain HTTP.',
+    'grade.e': 'Four security headers missing.',
+    'grade.f': 'Five or more security headers missing.',
+    'scan.scanning': 'Scanning',
+    'scan.analyzing': 'Analysing response headers…',
     'hero.title': 'Scan your site now',
     'hero.sub': "Six response headers decide most of your browser-side security. See which ones you're missing.",
     'hero.placeholder': 'example.com',
@@ -89,7 +105,23 @@ const I18N = {
       'HTTPセキュリティヘッダーを無料でオンライン診断。Content-Security-Policy、HSTS、X-Frame-Optionsなどを検査し、どのサイトでも即座にA+〜Fの評価を表示します。',
     'nav.home': 'ホーム',
     'nav.about': '概要',
+    'nav.grading': '評価基準',
     'nav.api': 'API',
+    'feat.headers': '6つのセキュリティヘッダー',
+    'feat.email': 'メール認証',
+    'feat.whois': 'WHOIS / RDAP',
+    'grade.title': '評価の仕組み',
+    'grade.intro':
+      '評価はAから始まり、6つのセキュリティヘッダーが1つ欠けるごとに1段階ずつ下がります。強力なContent-Security-Policyがあれば満点はA+に引き上げられます。',
+    'grade.aplus': '6つのヘッダーがすべて揃い、Content-Security-Policyにunsafe-inlineとunsafe-evalが含まれていない。',
+    'grade.a': '6つのセキュリティヘッダーがすべて揃っている。',
+    'grade.b': 'セキュリティヘッダーが1つ欠けている。',
+    'grade.c': 'セキュリティヘッダーが2つ欠けている。',
+    'grade.d': '3つ欠けている、またはサイトが平文のHTTPで配信されている。',
+    'grade.e': 'セキュリティヘッダーが4つ欠けている。',
+    'grade.f': 'セキュリティヘッダーが5つ以上欠けている。',
+    'scan.scanning': 'スキャン中',
+    'scan.analyzing': 'レスポンスヘッダーを解析中…',
     'hero.title': '今すぐサイトをスキャン',
     'hero.sub': 'ブラウザ側のセキュリティは6つのレスポンスヘッダーでほぼ決まります。不足しているものを確認しましょう。',
     'hero.placeholder': 'example.com',
@@ -293,6 +325,33 @@ document.getElementById('panels').addEventListener('click', (e) => {
   form.requestSubmit();
 });
 
+const SCAN_HEADERS = [
+  'Strict-Transport-Security',
+  'Content-Security-Policy',
+  'X-Frame-Options',
+  'X-Content-Type-Options',
+  'Referrer-Policy',
+  'Permissions-Policy',
+];
+
+function renderScanning(host) {
+  const rows = SCAN_HEADERS.map(
+    (h, i) => `<div class="scan-line" style="animation-delay:${i * 0.18}s"><span class="scan-dot"></span><span class="scan-name">${esc(h)}</span></div>`
+  ).join('');
+  resultEl.innerHTML = `
+    <div class="result-card scanning-card">
+      <div class="radar">
+        <span class="radar-sweep"></span>
+        <span class="radar-core">${esc(host.charAt(0).toUpperCase())}</span>
+      </div>
+      <div class="scanning-body">
+        <div class="scanning-title">${esc(t('scan.scanning'))} <span class="scanning-host">${esc(host)}</span></div>
+        <div class="scanning-sub">${esc(t('scan.analyzing'))}</div>
+        <div class="scan-lines">${rows}</div>
+      </div>
+    </div>`;
+}
+
 function renderResult(data) {
   lastResult = data;
   const cards = data.report
@@ -446,10 +505,14 @@ form.addEventListener('submit', async (e) => {
   const url = input.value.trim();
   if (!url) return;
 
+  const scanHost = url.replace(/^https?:\/\//i, '').split('/')[0] || url;
   btn.disabled = true;
-  btn.textContent = t('hero.scanning');
+  btn.classList.add('is-scanning');
+  const label = btn.querySelector('.btn-label');
+  if (label) label.textContent = t('hero.scanning');
   resultEl.classList.remove('hidden');
-  resultEl.innerHTML = `<div class="result-card">${esc(t('result.loading'))}</div>`;
+  renderScanning(scanHost);
+  resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   osintEl.classList.add('hidden');
   lastResult = null;
   lastOsint = null;
@@ -474,7 +537,9 @@ form.addEventListener('submit', async (e) => {
     resultEl.innerHTML = `<div class="result-error">${esc(t('err.unreachable'))}</div>`;
   } finally {
     btn.disabled = false;
-    btn.textContent = t('hero.scan');
+    btn.classList.remove('is-scanning');
+    const l = btn.querySelector('.btn-label');
+    if (l) l.textContent = t('hero.scan');
   }
 });
 
