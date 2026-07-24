@@ -188,7 +188,15 @@ function recordScan(result, hidden) {
 // Routes
 // ---------------------------------------------------------------------------
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, filePath) => {
+      // HTML/JS/CSS must revalidate so redeploys reach visitors immediately;
+      // images can be cached normally.
+      if (/\.(html|js|css)$/.test(filePath)) res.setHeader('Cache-Control', 'no-cache');
+    },
+  })
+);
 
 app.get('/api/scan', scanLimiter, async (req, res) => {
   const { url, follow = '1', hide = '0' } = req.query;
