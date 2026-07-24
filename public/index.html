@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="b4M-xMfqZRR9cTvbuWfHarol583GJEBs5qw4KMIbONo" />
-  <title data-i18n="meta.title">HeaderGrade — Free Security Header Scanner (A+ to F grades)</title>
-  <meta name="description" data-i18n="meta.description" content="Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website." />
-  <meta name="keywords" content="security headers, header scanner, content security policy, HSTS, CSP checker, website security test, セキュリティヘッダー, ヘッダースキャナー" />
+  <title data-i18n="meta.title">セキュリティヘッダーチェック 無料 | HeaderGrade</title>
+  <meta name="description" data-i18n="meta.description" content="セキュリティヘッダーを無料でチェックできるオンラインツール。Content-Security-Policy、HSTS、X-Frame-Optionsなどを診断し、どのサイトでも即座にA+〜Fの評価を表示します。" />
+  <meta name="keywords" content="セキュリティヘッダー, ヘッダーチェック, セキュリティヘッダー チェック, CSP チェック, HSTS, Content-Security-Policy, ウェブサイト セキュリティ診断, security headers, header check" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://osint.cybercrew.co.jp/" />
-  <link rel="alternate" hreflang="en" href="https://osint.cybercrew.co.jp/?lang=en" />
   <link rel="alternate" hreflang="ja" href="https://osint.cybercrew.co.jp/?lang=ja" />
+  <link rel="alternate" hreflang="en" href="https://osint.cybercrew.co.jp/?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://osint.cybercrew.co.jp/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="HeaderGrade" />
-  <meta property="og:title" content="HeaderGrade — Free Security Header Scanner" />
-  <meta property="og:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
+  <meta property="og:title" content="セキュリティヘッダーチェック 無料 | HeaderGrade" />
+  <meta property="og:description" content="サイトのHTTPレスポンスヘッダーをスキャンし、A+〜Fのセキュリティ評価を即座に表示します。" />
   <meta property="og:url" content="https://osint.cybercrew.co.jp/" />
-  <meta property="og:locale" content="en_US" id="og-locale" />
-  <meta property="og:locale:alternate" content="ja_JP" />
+  <meta property="og:locale" content="ja_JP" id="og-locale" />
+  <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="HeaderGrade — Free Security Header Scanner" />
-  <meta name="twitter:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
+  <meta name="twitter:title" content="セキュリティヘッダーチェック 無料 | HeaderGrade" />
+  <meta name="twitter:description" content="サイトのHTTPレスポンスヘッダーをスキャンし、A+〜Fのセキュリティ評価を即座に表示します。" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -30,8 +30,8 @@
     "url": "https://osint.cybercrew.co.jp/",
     "applicationCategory": "SecurityApplication",
     "operatingSystem": "Any",
-    "inLanguage": ["en", "ja"],
-    "description": "Free online scanner that grades a website's HTTP security headers from A+ to F and runs passive OSINT recon.",
+    "inLanguage": ["ja", "en"],
+    "description": "セキュリティヘッダーを無料でチェックし、A+〜Fで評価するオンラインツール。受動的なOSINT調査も実行します。",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
@@ -47,9 +47,9 @@
         <img src="logo.png" alt="HeaderGrade" class="brand-logo" width="167" height="32" />
       </a>
       <nav class="nav">
-        <a href="/" data-i18n="nav.home">Home</a>
-        <a href="#about" data-i18n="nav.about">About</a>
-        <a href="#grading" data-i18n="nav.grading">Grading</a>
+        <a href="/" data-i18n="nav.home">ホーム</a>
+        <a href="#about" data-i18n="nav.about">概要</a>
+        <a href="#grading" data-i18n="nav.grading">評価基準</a>
         <a href="#api" data-i18n="nav.api">API</a>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">
           <span data-lang="en">EN</span><span class="sep">/</span><span data-lang="ja">日本語</span>
@@ -58,22 +58,22 @@
     </div>
 
     <div class="wrap hero">
-      <h1 data-i18n="hero.title">Scan your site now</h1>
-      <p class="hero-sub" data-i18n="hero.sub">Six response headers decide most of your browser-side security. See which ones you're missing.</p>
+      <h1 data-i18n="hero.title">今すぐサイトをスキャン</h1>
+      <p class="hero-sub" data-i18n="hero.sub">ブラウザ側のセキュリティは6つのレスポンスヘッダーでほぼ決まります。不足しているものを確認しましょう。</p>
       <form id="scan-form" class="scan-bar" autocomplete="off">
         <input id="url-input" type="text" data-i18n-attr="placeholder:hero.placeholder" placeholder="example.com" spellcheck="false" required />
-        <button type="submit" id="scan-btn"><span class="btn-label" data-i18n="hero.scan">Scan</span></button>
+        <button type="submit" id="scan-btn"><span class="btn-label" data-i18n="hero.scan">スキャン</span></button>
       </form>
       <div class="scan-opts">
-        <label><input type="checkbox" id="opt-hide" /> <span data-i18n="hero.hide">Hide results</span></label>
-        <label><input type="checkbox" id="opt-follow" checked /> <span data-i18n="hero.follow">Follow redirects</span></label>
+        <label><input type="checkbox" id="opt-hide" /> <span data-i18n="hero.hide">結果を非表示</span></label>
+        <label><input type="checkbox" id="opt-follow" checked /> <span data-i18n="hero.follow">リダイレクトを追跡</span></label>
       </div>
       <ul class="feature-chips">
-        <li data-i18n="feat.headers">6 security headers</li>
-        <li data-i18n="osint.dns">DNS records</li>
-        <li data-i18n="osint.tls">TLS certificate</li>
-        <li data-i18n="osint.subs">Subdomains</li>
-        <li data-i18n="feat.email">Email auth</li>
+        <li data-i18n="feat.headers">6つのセキュリティヘッダー</li>
+        <li data-i18n="osint.dns">DNSレコード</li>
+        <li data-i18n="osint.tls">TLS証明書</li>
+        <li data-i18n="osint.subs">サブドメイン</li>
+        <li data-i18n="feat.email">メール認証</li>
         <li data-i18n="feat.whois">WHOIS / RDAP</li>
       </ul>
     </div>
@@ -85,42 +85,42 @@
 
     <section class="panels" id="panels">
       <div class="panel">
-        <h2 data-i18n="panel.totals">Grand totals</h2>
+        <h2 data-i18n="panel.totals">総合集計</h2>
         <table id="totals-table"></table>
       </div>
       <div class="panel">
-        <h2 data-i18n="panel.recent">Recent scans</h2>
+        <h2 data-i18n="panel.recent">最近のスキャン</h2>
         <table id="recent-table"></table>
       </div>
       <div class="panel">
-        <h2 data-i18n="panel.fame">Hall of fame</h2>
+        <h2 data-i18n="panel.fame">殿堂入り</h2>
         <table id="fame-table"></table>
       </div>
     </section>
 
     <section id="grading" class="grading">
-      <h2 data-i18n="grade.title">How we grade</h2>
-      <p class="grading-intro" data-i18n="grade.intro">Your grade starts at A and drops one letter for each of the six security headers you're missing. A strong Content-Security-Policy lifts a perfect score to A+.</p>
+      <h2 data-i18n="grade.title">評価の仕組み</h2>
+      <p class="grading-intro" data-i18n="grade.intro">評価はAから始まり、6つのセキュリティヘッダーが1つ欠けるごとに1段階ずつ下がります。強力なContent-Security-Policyがあれば満点はA+に引き上げられます。</p>
       <div class="grade-scale">
-        <div class="grade-row"><span class="grade-badge" data-g="A+">A+</span><span class="grade-desc" data-i18n="grade.aplus">All six headers present, with a Content-Security-Policy free of unsafe-inline and unsafe-eval.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="A">A</span><span class="grade-desc" data-i18n="grade.a">All six security headers present.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="B">B</span><span class="grade-desc" data-i18n="grade.b">One security header missing.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="C">C</span><span class="grade-desc" data-i18n="grade.c">Two security headers missing.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="D">D</span><span class="grade-desc" data-i18n="grade.d">Three missing — or the site was served over plain HTTP.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="E">E</span><span class="grade-desc" data-i18n="grade.e">Four security headers missing.</span></div>
-        <div class="grade-row"><span class="grade-badge" data-g="F">F</span><span class="grade-desc" data-i18n="grade.f">Five or more security headers missing.</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="A+">A+</span><span class="grade-desc" data-i18n="grade.aplus">6つのヘッダーがすべて揃い、Content-Security-Policyにunsafe-inlineとunsafe-evalが含まれていない。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="A">A</span><span class="grade-desc" data-i18n="grade.a">6つのセキュリティヘッダーがすべて揃っている。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="B">B</span><span class="grade-desc" data-i18n="grade.b">セキュリティヘッダーが1つ欠けている。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="C">C</span><span class="grade-desc" data-i18n="grade.c">セキュリティヘッダーが2つ欠けている。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="D">D</span><span class="grade-desc" data-i18n="grade.d">3つ欠けている、またはサイトが平文のHTTPで配信されている。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="E">E</span><span class="grade-desc" data-i18n="grade.e">セキュリティヘッダーが4つ欠けている。</span></div>
+        <div class="grade-row"><span class="grade-badge" data-g="F">F</span><span class="grade-desc" data-i18n="grade.f">セキュリティヘッダーが5つ以上欠けている。</span></div>
       </div>
     </section>
 
     <section id="about" class="prose">
-      <h2 data-i18n="about.title">About</h2>
-      <p data-i18n="about.p1">HeaderGrade fetches a page the way a browser would and inspects the HTTP response headers that control browser-side security: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy. Each missing header lowers the grade one step from A down to F. A site with all six — and a Content-Security-Policy free of unsafe-inline — earns an A+.</p>
-      <p data-i18n="about.p2">Every scan also runs a passive OSINT recon pass: DNS records, email authentication (SPF, DMARC, MX), the live TLS certificate, subdomains discovered from public certificate transparency logs, and domain registration from RDAP. All of it reads public data — nothing probes ports or sends unsolicited traffic.</p>
+      <h2 data-i18n="about.title">概要</h2>
+      <p data-i18n="about.p1">HeaderGradeはブラウザと同じようにページを取得し、ブラウザ側のセキュリティを制御するHTTPレスポンスヘッダーを検査します：Strict-Transport-Security、Content-Security-Policy、X-Frame-Options、X-Content-Type-Options、Referrer-Policy、Permissions-Policy。ヘッダーが1つ欠けるごとに評価はAからFへ1段階下がります。6つすべてが揃い、Content-Security-Policyにunsafe-inlineが含まれていなければA+になります。</p>
+      <p data-i18n="about.p2">各スキャンでは受動的なOSINT調査も実行します：DNSレコード、メール認証（SPF、DMARC、MX）、稼働中のTLS証明書、公開された証明書透明性ログから見つかったサブドメイン、RDAPによるドメイン登録情報。すべて公開データを読み取るだけで、ポートスキャンや不要な通信は一切行いません。</p>
     </section>
 
     <section id="api" class="prose">
       <h2 data-i18n="api.title">API</h2>
-      <p data-i18n="api.intro">Everything on this page is available as JSON:</p>
+      <p data-i18n="api.intro">このページのすべての情報はJSONで取得できます：</p>
       <pre>GET /api/scan?url=example.com&amp;follow=1&amp;hide=0
 GET /api/osint?domain=example.com
 GET /api/stats</pre>
@@ -128,7 +128,7 @@ GET /api/stats</pre>
   </main>
 
   <footer class="site-foot">
-    <div class="wrap" data-i18n="footer.note">Grades reflect header presence only — they are a starting point, not a full audit.</div>
+    <div class="wrap" data-i18n="footer.note">評価はヘッダーの有無のみを反映します。これは出発点であり、完全な監査ではありません。</div>
   </footer>
 
   <script src="app.js"></script>

@@ -4,9 +4,9 @@
 
 const I18N = {
   en: {
-    'meta.title': 'HeaderGrade — Free Security Header Scanner (A+ to F grades)',
+    'meta.title': 'Security Header Check — Free Online Scanner | HeaderGrade',
     'meta.description':
-      "Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website.",
+      "Free online tool to check HTTP security headers. Scan Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website.",
     'nav.home': 'Home',
     'nav.about': 'About',
     'nav.grading': 'Grading',
@@ -100,9 +100,9 @@ const I18N = {
     'email.mx_missing': 'No MX records — the domain does not receive email.',
   },
   ja: {
-    'meta.title': 'HeaderGrade — 無料セキュリティヘッダースキャナー（A+〜F評価）',
+    'meta.title': 'セキュリティヘッダーチェック 無料 | HeaderGrade',
     'meta.description':
-      'HTTPセキュリティヘッダーを無料でオンライン診断。Content-Security-Policy、HSTS、X-Frame-Optionsなどを検査し、どのサイトでも即座にA+〜Fの評価を表示します。',
+      'セキュリティヘッダーを無料でチェックできるオンラインツール。Content-Security-Policy、HSTS、X-Frame-Optionsなどを診断し、どのサイトでも即座にA+〜Fの評価を表示します。',
     'nav.home': 'ホーム',
     'nav.about': '概要',
     'nav.grading': '評価基準',
