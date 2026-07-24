@@ -2,4 +2,4 @@
 Allow: /
 Disallow: /api/
 
-Sitemap: https://headergrade.cybercrew.co.jp/sitemap.xml
+Sitemap: https://osint.cybercrew.co.jp/sitemap.xml

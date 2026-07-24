@@ -3,16 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HeaderGrade — Free Security Header Scanner (A+ to F grades)</title>
-  <meta name="description" content="Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website." />
-  <meta name="keywords" content="security headers, header scanner, content security policy, HSTS, CSP checker, website security test" />
+  <meta name="google-site-verification" content="b4M-xMfqZRR9cTvbuWfHarol583GJEBs5qw4KMIbONo" />
+  <title data-i18n="meta.title">HeaderGrade — Free Security Header Scanner (A+ to F grades)</title>
+  <meta name="description" data-i18n="meta.description" content="Free online scanner for HTTP security headers. Check Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website." />
+  <meta name="keywords" content="security headers, header scanner, content security policy, HSTS, CSP checker, website security test, セキュリティヘッダー, ヘッダースキャナー" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://headergrade.cybercrew.co.jp/" />
+  <link rel="canonical" href="https://osint.cybercrew.co.jp/" />
+  <link rel="alternate" hreflang="en" href="https://osint.cybercrew.co.jp/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://osint.cybercrew.co.jp/?lang=ja" />
+  <link rel="alternate" hreflang="x-default" href="https://osint.cybercrew.co.jp/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="HeaderGrade" />
   <meta property="og:title" content="HeaderGrade — Free Security Header Scanner" />
   <meta property="og:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
-  <meta property="og:url" content="https://headergrade.cybercrew.co.jp/" />
+  <meta property="og:url" content="https://osint.cybercrew.co.jp/" />
+  <meta property="og:locale" content="en_US" id="og-locale" />
+  <meta property="og:locale:alternate" content="ja_JP" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="HeaderGrade — Free Security Header Scanner" />
   <meta name="twitter:description" content="Scan any website's HTTP response headers and get an instant A+ to F security grade." />
@@ -21,16 +27,17 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "HeaderGrade",
-    "url": "https://headergrade.cybercrew.co.jp/",
+    "url": "https://osint.cybercrew.co.jp/",
     "applicationCategory": "SecurityApplication",
     "operatingSystem": "Any",
-    "description": "Free online scanner that grades a website's HTTP security headers from A+ to F.",
+    "inLanguage": ["en", "ja"],
+    "description": "Free online scanner that grades a website's HTTP security headers from A+ to F and runs passive OSINT recon.",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -41,22 +48,25 @@
         <span class="brand-name">HeaderGrade</span>
       </a>
       <nav class="nav">
-        <a href="/">Home</a>
-        <a href="#about">About</a>
-        <a href="#api">API</a>
+        <a href="/" data-i18n="nav.home">Home</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#api" data-i18n="nav.api">API</a>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">
+          <span data-lang="en">EN</span><span class="sep">/</span><span data-lang="ja">日本語</span>
+        </button>
       </nav>
     </div>
 
     <div class="wrap hero">
-      <h1>Scan your site now</h1>
-      <p class="hero-sub">Six response headers decide most of your browser-side security. See which ones you're missing.</p>
+      <h1 data-i18n="hero.title">Scan your site now</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Six response headers decide most of your browser-side security. See which ones you're missing.</p>
       <form id="scan-form" class="scan-bar" autocomplete="off">
-        <input id="url-input" type="text" placeholder="example.com" spellcheck="false" required />
-        <button type="submit" id="scan-btn">Scan</button>
+        <input id="url-input" type="text" data-i18n-attr="placeholder:hero.placeholder" placeholder="example.com" spellcheck="false" required />
+        <button type="submit" id="scan-btn" data-i18n="hero.scan">Scan</button>
       </form>
       <div class="scan-opts">
-        <label><input type="checkbox" id="opt-hide" /> Hide results</label>
-        <label><input type="checkbox" id="opt-follow" checked /> Follow redirects</label>
+        <label><input type="checkbox" id="opt-hide" /> <span data-i18n="hero.hide">Hide results</span></label>
+        <label><input type="checkbox" id="opt-follow" checked /> <span data-i18n="hero.follow">Follow redirects</span></label>
       </div>
     </div>
   </header>
@@ -67,46 +77,36 @@
 
     <section class="panels" id="panels">
       <div class="panel">
-        <h2>Grand totals</h2>
+        <h2 data-i18n="panel.totals">Grand totals</h2>
         <table id="totals-table"></table>
       </div>
       <div class="panel">
-        <h2>Recent scans</h2>
+        <h2 data-i18n="panel.recent">Recent scans</h2>
         <table id="recent-table"></table>
       </div>
       <div class="panel">
-        <h2>Hall of fame</h2>
+        <h2 data-i18n="panel.fame">Hall of fame</h2>
         <table id="fame-table"></table>
-      </div>
-      <div class="panel">
-        <h2>Hall of shame</h2>
-        <table id="shame-table"></table>
       </div>
     </section>
 
     <section id="about" class="prose">
-      <h2>About</h2>
-      <p>HeaderGrade fetches a page the way a browser would and inspects the HTTP response headers that control
-        browser-side security: <code>Strict-Transport-Security</code>, <code>Content-Security-Policy</code>,
-        <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code> and
-        <code>Permissions-Policy</code>. Each missing header lowers the grade one step from A down to F.
-        A site with all six — and a Content-Security-Policy free of <code>unsafe-inline</code> — earns an A+.</p>
-      <p>Every scan also runs a passive <strong>OSINT recon</strong> pass: DNS records, email
-        authentication (SPF, DMARC, MX), the live TLS certificate, subdomains discovered from public
-        certificate transparency logs, and domain registration from RDAP. All of it reads public data —
-        nothing probes ports or sends unsolicited traffic.</p>
+      <h2 data-i18n="about.title">About</h2>
+      <p data-i18n="about.p1">HeaderGrade fetches a page the way a browser would and inspects the HTTP response headers that control browser-side security: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy. Each missing header lowers the grade one step from A down to F. A site with all six — and a Content-Security-Policy free of unsafe-inline — earns an A+.</p>
+      <p data-i18n="about.p2">Every scan also runs a passive OSINT recon pass: DNS records, email authentication (SPF, DMARC, MX), the live TLS certificate, subdomains discovered from public certificate transparency logs, and domain registration from RDAP. All of it reads public data — nothing probes ports or sends unsolicited traffic.</p>
     </section>
 
     <section id="api" class="prose">
-      <h2>API</h2>
-      <p>Everything on this page is available as JSON:</p>
+      <h2 data-i18n="api.title">API</h2>
+      <p data-i18n="api.intro">Everything on this page is available as JSON:</p>
       <pre>GET /api/scan?url=example.com&amp;follow=1&amp;hide=0
+GET /api/osint?domain=example.com
 GET /api/stats</pre>
     </section>
   </main>
 
   <footer class="site-foot">
-    <div class="wrap">Grades reflect header presence only — they are a starting point, not a full audit.</div>
+    <div class="wrap" data-i18n="footer.note">Grades reflect header presence only — they are a starting point, not a full audit.</div>
   </footer>
 
   <script src="app.js"></script>

@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const { assertPublicHost } = require('./lib/guard');
@@ -6,6 +7,32 @@ const { runOsint } = require('./lib/osint');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Behind DigitalOcean's proxy — trust the first hop so rate limiting keys on
+// the real client IP rather than the load balancer.
+app.set('trust proxy', 1);
+
+// Site-wide limiter: generous, covers static assets and the stats endpoint.
+const siteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) =>
+    res.status(429).json({ error: 'Too many requests.', errorCode: 'rate_limited' }),
+});
+
+// Scan/OSINT limiter: these make outbound network calls, so they're tighter.
+const scanLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) =>
+    res.status(429).json({ error: 'Too many requests.', errorCode: 'rate_limited' }),
+});
+
+app.use(siteLimiter);
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'scans.json');
 
@@ -69,12 +96,14 @@ const LEAKY_HEADERS = ['server', 'x-powered-by', 'x-aspnet-version', 'x-aspnetmv
 
 const GRADE_BY_MISSING = ['A', 'B', 'C', 'D', 'E', 'F', 'F'];
 
+// Human-readable text lives in the client so it can be shown in either
+// language. The API returns stable codes; the frontend dictionary renders them.
 function gradeHeaders(headers, finalUrl) {
   const report = SCORED_HEADERS.map((h) => ({
+    key: h.name,
     header: h.label,
     present: headers.has(h.name),
     value: headers.get(h.name) || null,
-    why: h.why,
   }));
 
   const missing = report.filter((r) => !r.present).length;
@@ -88,17 +117,19 @@ function gradeHeaders(headers, finalUrl) {
     grade = 'A+';
   }
   if (csp && cspWeak) {
-    notes.push('Content-Security-Policy contains unsafe-inline or unsafe-eval, which weakens XSS protection.');
+    notes.push({ code: 'csp_weak' });
   }
 
   if (finalUrl.startsWith('http:')) {
-    notes.push('The site was served over plain HTTP. Serve it over HTTPS to allow HSTS and secure cookies.');
+    notes.push({ code: 'http_scheme' });
     if (grade < 'D') grade = 'D';
   }
 
-  const warnings = LEAKY_HEADERS.filter((h) => headers.has(h)).map(
-    (h) => `${h} header exposes server software details (${headers.get(h)}). Consider removing it.`
-  );
+  const warnings = LEAKY_HEADERS.filter((h) => headers.has(h)).map((h) => ({
+    code: 'leaky_header',
+    header: h,
+    value: headers.get(h),
+  }));
 
   return { grade, report, notes, warnings };
 }
@@ -159,31 +190,28 @@ function recordScan(result, hidden) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/scan', async (req, res) => {
+app.get('/api/scan', scanLimiter, async (req, res) => {
   const { url, follow = '1', hide = '0' } = req.query;
-  if (!url) return res.status(400).json({ error: 'Missing url parameter.' });
+  if (!url) return res.status(400).json({ error: 'Missing url parameter.', errorCode: 'missing_url' });
 
   try {
     const result = await scanUrl(String(url), follow === '1');
     recordScan(result, hide === '1');
     res.json(result);
   } catch (err) {
-    const message =
-      err.name === 'TimeoutError'
-        ? 'The site took too long to respond.'
-        : err.message || 'Scan failed.';
-    res.status(422).json({ error: message });
+    const errorCode = err.name === 'TimeoutError' ? 'timeout' : err.code || 'scan_failed';
+    res.status(422).json({ error: err.message || 'Scan failed.', errorCode });
   }
 });
 
-app.get('/api/osint', async (req, res) => {
+app.get('/api/osint', scanLimiter, async (req, res) => {
   const { domain } = req.query;
-  if (!domain) return res.status(400).json({ error: 'Missing domain parameter.' });
+  if (!domain) return res.status(400).json({ error: 'Missing domain parameter.', errorCode: 'missing_domain' });
   try {
     const result = await runOsint(String(domain));
     res.json(result);
   } catch (err) {
-    res.status(422).json({ error: err.message || 'OSINT lookup failed.' });
+    res.status(422).json({ error: err.message || 'OSINT lookup failed.', errorCode: err.code || 'osint_failed' });
   }
 });
 
