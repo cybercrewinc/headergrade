@@ -102,6 +102,7 @@
 
   function noteText(n) {
     if (n.code === 'leaky_header') return t('warn.leaky_header', { header: n.header, value: n.value });
+    if (n.code === 'error_response') return t('note.error_response', { status: n.status });
     return t('note.' + n.code);
   }
 

@@ -101,6 +101,10 @@ const I18N = {
     'note.csp_weak': 'Content-Security-Policy contains unsafe-inline or unsafe-eval, which weakens XSS protection.',
     'note.http_scheme':
       'The site was served over plain HTTP. Serve it over HTTPS to allow HSTS and secure cookies.',
+    'note.error_response':
+      'The server answered with HTTP {status} — an error page, not the real site. The site may be blocking automated scanners, so this grade reflects the error response only.',
+    'note.ua_fallback':
+      'The site rejected our scanner identity, so this result comes from a retry using a browser-like User-Agent.',
     'warn.leaky_header': '{header} header exposes server software details ({value}). Consider removing it.',
     'osint.title': 'OSINT recon',
     'osint.loading': 'Gathering DNS, TLS, subdomains and registration…',
@@ -252,6 +256,10 @@ const I18N = {
       'Content-Security-Policyにunsafe-inlineまたはunsafe-evalが含まれており、XSS防御が弱まっています。',
     'note.http_scheme':
       'サイトが平文のHTTPで配信されました。HSTSやセキュアCookieを有効にするにはHTTPSで配信してください。',
+    'note.error_response':
+      'サーバーはHTTP {status}のエラーページを返しました。サイトが自動スキャナーをブロックしている可能性があり、この評価はエラーレスポンスのみを反映しています。',
+    'note.ua_fallback':
+      'サイトがスキャナーのUser-Agentを拒否したため、ブラウザ相当のUser-Agentで再試行した結果を表示しています。',
     'warn.leaky_header':
       '{header}ヘッダーがサーバーソフトウェアの詳細（{value}）を公開しています。削除を検討してください。',
     'osint.title': 'OSINT調査',
@@ -402,6 +410,7 @@ function gradeChip(grade) {
 
 function noteText(n) {
   if (n.code === 'leaky_header') return t('warn.leaky_header', { header: n.header, value: n.value });
+  if (n.code === 'error_response') return t('note.error_response', { status: n.status });
   return t('note.' + n.code);
 }
 

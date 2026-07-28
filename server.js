@@ -151,6 +151,14 @@ function gradeHeaders(headers, finalUrl) {
 // Scan
 // ---------------------------------------------------------------------------
 
+const SCANNER_UA = 'HeaderGrade/1.0 (+security header scanner)';
+const BROWSER_UA =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+
+// Statuses WAFs and anti-bot rules typically serve to non-browser clients
+// while the real site works fine in a browser.
+const BLOCKED_STATUSES = new Set([403, 406, 429, 503]);
+
 async function scanUrl(rawUrl, followRedirects) {
   let target = rawUrl.trim();
   if (!/^https?:\/\//i.test(target)) target = 'https://' + target;
@@ -158,15 +166,28 @@ async function scanUrl(rawUrl, followRedirects) {
   const parsed = new URL(target);
   await assertPublicHost(parsed.hostname);
 
-  const res = await fetch(parsed.href, {
-    method: 'GET',
-    redirect: followRedirects ? 'follow' : 'manual',
-    signal: AbortSignal.timeout(15000),
-    headers: { 'User-Agent': 'HeaderGrade/1.0 (+security header scanner)' },
-  });
+  const doFetch = (userAgent) =>
+    fetch(parsed.href, {
+      method: 'GET',
+      redirect: followRedirects ? 'follow' : 'manual',
+      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': userAgent },
+    });
+
+  let res = await doFetch(SCANNER_UA);
+  let uaFallback = false;
+  if (BLOCKED_STATUSES.has(res.status)) {
+    const retry = await doFetch(BROWSER_UA);
+    if (retry.status < 400) {
+      res = retry;
+      uaFallback = true;
+    }
+  }
 
   const finalUrl = res.url || parsed.href;
   const { grade, report, notes, warnings } = gradeHeaders(res.headers, finalUrl);
+  if (uaFallback) notes.unshift({ code: 'ua_fallback' });
+  if (res.status >= 400) notes.unshift({ code: 'error_response', status: res.status });
 
   const raw = {};
   res.headers.forEach((value, key) => {
@@ -217,7 +238,9 @@ app.get('/api/scan', scanLimiter, async (req, res) => {
 
   try {
     const result = await scanUrl(String(url), follow === '1');
-    recordScan(result, hide === '1');
+    // An error page's headers say nothing about the real site — keep those
+    // grades out of the public totals and hall of fame.
+    if (result.status < 400) recordScan(result, hide === '1');
     res.json(result);
   } catch (err) {
     const errorCode = err.name === 'TimeoutError' ? 'timeout' : err.code || 'scan_failed';
