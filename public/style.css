@@ -18,6 +18,8 @@
   --g-d: #e07b1f;
   --g-e: #d94f27;
   --g-f: #d62f2f;
+  --cc-teal: #1aafab;
+  --cc-navy: #0b1a31;
 }
 
 * { box-sizing: border-box; margin: 0; }
@@ -464,6 +466,89 @@ body {
 .foot-repo { color: var(--accent); text-decoration: none; font-weight: 600; }
 .foot-repo:hover { text-decoration: underline; }
 
+/* ---- CyberCrew band ---- */
+
+.cc-band {
+  background: var(--cc-teal);
+  color: #fff;
+  text-align: center;
+  padding: 56px 0 50px;
+}
+
+.cc-logo {
+  width: 292px;
+  max-width: 78%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.cc-copy { margin-top: 30px; }
+.cc-copy p {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  max-width: 30em;
+  margin: 0 auto;
+  white-space: pre-line;
+}
+.cc-copy p + p { margin-top: 14px; }
+
+.cc-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 26px;
+  min-width: 228px;
+  height: 43px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--cc-navy);
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.cc-cta:hover, .cc-cta:focus-visible {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ---- corporate footer ---- */
+
+.corp-foot {
+  background: var(--cc-navy);
+  color: #fff;
+  text-align: center;
+  padding: 28px 0 34px;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.corp-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 72px;
+}
+
+.corp-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+}
+.corp-links a { color: #fff; text-decoration: none; }
+.corp-links a:hover, .corp-links a:focus-visible { text-decoration: underline; }
+.corp-links .sep { color: rgba(255, 255, 255, 0.45); margin: 0 6px; }
+
+.corp-copy {
+  margin-top: 26px;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
 /* ---- content pages (about / api) ---- */
 
 .site-head.slim { padding-bottom: 0; }
@@ -516,4 +601,10 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .result-card, .osint-card { animation: rise 0.3s ease-out; }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+
+@media (max-width: 560px) {
+  .cc-band { padding: 44px 0 40px; }
+  .cc-cta { width: 100%; min-width: 0; }
+  .corp-row { gap: 4px 24px; }
 }

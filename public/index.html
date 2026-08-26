@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
   <header class="site-head">
@@ -118,9 +118,41 @@
     </div>
   </footer>
 
+  <section class="cc-band">
+    <div class="wrap cc-band-inner">
+      <img src="cybercrew-logo.png" alt="CyberCrew" class="cc-logo" width="660" height="77" />
+      <div class="cc-copy">
+        <p data-i18n="cc.p1">HeaderGradeは、株式会社CyberCrewが開発・運営する
+無料のWebセキュリティチェックツールです。</p>
+        <p data-i18n="cc.p2">より詳細なセキュリティ評価や対策をご検討の場合は、
+CyberCrewのWebサイトをご覧ください。</p>
+      </div>
+      <a class="cc-cta" href="https://cyber.spool.co.jp/" target="_blank" rel="noopener" data-i18n="cc.cta">CyberCrew公式サイトを見る →</a>
+    </div>
+  </section>
+
+  <footer class="corp-foot">
+    <div class="wrap">
+      <div class="corp-row">
+        <span class="corp-name" data-i18n="corp.name">株式会社 CyberCrew（サイバークルー）</span>
+        <span class="corp-addr" data-i18n="corp.address">〒101-0021　東京都千代田区外神田 1-18-13 秋葉原ダイビル６階</span>
+      </div>
+      <nav class="corp-links">
+        <a href="https://cyber.spool.co.jp/company/" target="_blank" rel="noopener" data-i18n="corp.company">会社概要</a>
+        <span class="sep" aria-hidden="true">｜</span>
+        <a href="https://cyber.spool.co.jp/privacy-policy/" target="_blank" rel="noopener" data-i18n="corp.privacy">個人情報保護方針</a>
+        <span class="sep" aria-hidden="true">｜</span>
+        <a href="https://cyber.spool.co.jp/security-policy/" target="_blank" rel="noopener" data-i18n="corp.security">情報セキュリティ方針</a>
+        <span class="sep" aria-hidden="true">｜</span>
+        <a href="https://github.com/Ishan-Nim/headergrade" target="_blank" rel="noopener" data-i18n="nav.repo">GitHub</a>
+      </nav>
+      <p class="corp-copy">Copyright © CyberCrew Inc. All rights reserved</p>
+    </div>
+  </footer>
+
   <script src="vendor/jspdf.umd.min.js"></script>
   <script src="vendor/html2canvas.min.js"></script>
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
   <script src="report.js?v=1"></script>
 </body>
 </html>
