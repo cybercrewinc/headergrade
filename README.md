@@ -4,7 +4,7 @@ A free, self-hostable security header scanner, inspired by [securityheaders.com]
 Enter any URL and HeaderGrade fetches the page, inspects its HTTP response headers, and returns an instant
 **A+ to F** grade — plus a breakdown of what's present, what's missing, and why it matters.
 
-Live: **https://headergrade.cybercrew.co.jp**
+Live: **https://osint.cybercrew.co.jp**
 
 ## What it checks
 
@@ -42,6 +42,21 @@ npm start
 ```
 
 Requires Node.js 18+ (uses the built-in `fetch`).
+
+## Configuration
+
+Every secret is read from the environment — nothing is committed to this repository.
+All of them are optional; the scanner runs without any of them.
+
+| Variable | Purpose |
+| --- | --- |
+| `PORT` | HTTP port to listen on (default `3000`) |
+| `SEED_TOKEN` | Shared secret that lets the bulk seeder (`scan_targets.py`) bypass rate limiting. Use a long random value, and note it travels as a query parameter, so it will appear in access logs. |
+| `ZAP_API_URL` | Base URL of an OWASP ZAP daemon, if you want active scanning |
+| `ZAP_API_KEY` | That daemon's `api.key` |
+
+Put them in a `.env` file or export them before `npm start`. `.env` and `data/` are
+git-ignored and must stay that way.
 
 ## API
 
