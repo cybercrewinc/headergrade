@@ -4,7 +4,7 @@
 
 const I18N = {
   en: {
-    'meta.title': 'Security Header Check — Free Online Scanner | HeaderGrade',
+    'meta.title': 'Security Header Check: Free Online Scanner | HeaderGrade',
     'meta.description':
       "Free online tool to check HTTP security headers. Scan Content-Security-Policy, HSTS, X-Frame-Options and more, and get an instant A+ to F grade for any website.",
     'nav.home': 'Home',
@@ -166,7 +166,7 @@ const I18N = {
     'email.mx_missing': 'No MX records — the domain does not receive email.',
   },
   ja: {
-    'meta.title': 'セキュリティヘッダーチェック 無料 | HeaderGrade',
+    'meta.title': 'セキュリティヘッダーチェック 無料診断ツール | HeaderGrade',
     'meta.description':
       'セキュリティヘッダーを無料でチェックできるオンラインツール。Content-Security-Policy、HSTS、X-Frame-Optionsなどを診断し、どのサイトでも即座にA+〜Fの評価を表示します。',
     'nav.home': 'ホーム',
@@ -364,6 +364,14 @@ function applyLang(lang) {
 
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute('content', t('meta.description'));
+  for (const id of ['og-title', 'tw-title']) {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('content', t('meta.title'));
+  }
+  for (const id of ['og-description', 'tw-description']) {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('content', t('meta.description'));
+  }
   const ogLocale = document.getElementById('og-locale');
   if (ogLocale) ogLocale.setAttribute('content', lang === 'ja' ? 'ja_JP' : 'en_US');
 
