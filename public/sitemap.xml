@@ -3,6 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://osint.cybercrew.co.jp/</loc>
+    <lastmod>2026-10-02</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://osint.cybercrew.co.jp/?lang=en" />
     <xhtml:link rel="alternate" hreflang="ja" href="https://osint.cybercrew.co.jp/?lang=ja" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://osint.cybercrew.co.jp/" />
@@ -11,11 +12,13 @@
   </url>
   <url>
     <loc>https://osint.cybercrew.co.jp/about.html</loc>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://osint.cybercrew.co.jp/api.html</loc>
+    <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
